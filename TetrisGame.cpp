@@ -2,7 +2,21 @@
 
 // TetrisGame constructor
 TetrisGame::TetrisGame() {
-  // Initialize the game board
+    // Initialize the game board with 0s (empty spaces)
+    board.resize(BOARD_HEIGHT, std::vector<int>(BOARD_WIDTH, 0));
+
+    // Spawn the first piece
+    spawnPiece();
+
+    // Set the initial position of the piece (top center of the board)
+    currentX = BOARD_WIDTH / 2 - currentPiece[0].size() / 2;
+    currentY = 0;
+
+    // Initialize the lines cleared counter
+    linesCleared = 0;
+
+    // Set the initial game state
+    isGameOver = false;
 }
 
 // Main game loop
