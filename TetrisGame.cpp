@@ -308,5 +308,5 @@ void TetrisGame::setCursorPosition(int x, int y) {
 
 // Set the console text color
 void TetrisGame::setColor(int color) {
-// Set the color of the console text
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
