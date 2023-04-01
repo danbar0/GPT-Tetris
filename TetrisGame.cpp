@@ -198,12 +198,31 @@ void TetrisGame::spawnPiece() {
   currentPiece = TETROMINOS[rand() % pieces.size()];
 }
 
-
-
 // Check if a move is valid
-bool TetrisGame::isValidMove(int x, int y, const std::vector<std::vector<int>>& piece) {
-// Check for collisions with the board boundaries and other pieces
+bool TetrisGame::isValidMove(int newX, int newY, const std::vector<std::vector<int>>& piece) {
+  for (size_t y = 0; y < piece.size(); ++y) {
+    for (size_t x = 0; x < piece[y].size(); ++x) {
+      // Check if the piece's cell is occupied
+      if (piece[y][x]) {
+        int boardX = newX + x;
+        int boardY = newY + y;
+
+        // Check if the move is out of the game board's bounds
+        if (boardX < 0 || boardX >= BOARD_WIDTH || boardY < 0 || boardY >= BOARD_HEIGHT) {
+          return false;
+        }
+
+        // Check if the move results in overlapping an existing block on the game board
+        if (board[boardY][boardX]) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
 }
+
 
 // Merge the current piece with the game board
 void TetrisGame::mergePiece(int x, int y, const std::vector<std::vector<int>>& piece) {
