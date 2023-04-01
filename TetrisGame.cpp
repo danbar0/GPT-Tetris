@@ -50,8 +50,41 @@ void TetrisGame::run() {
 
 // Process user input
 void TetrisGame::processInput() {
-  // Handle arrow keys and rotation
+  if (_kbhit()) {
+    int key = _getch();
+    int newX = currentX;
+    int newY = currentY;
+
+    switch (key) {
+      case 224:  // Arrow keys have a 224 prefix
+        key = _getch();  // Get the actual arrow key code
+        switch (key) {
+          case 75:  // Left arrow key
+            newX--;
+            break;
+          case 77:  // Right arrow key
+            newX++;
+            break;
+          case 72:  // Up arrow key (rotate)
+            rotatePiece(currentPiece);
+            break;
+          case 80:  // Down arrow key (fast drop)
+            while (isValidMove(currentX, currentY + 1, currentPiece)) {
+              currentY++;
+            }
+            break;
+        }
+        break;
+    }
+
+    // Check if the move is valid and update the position if it is
+    if (isValidMove(newX, newY, currentPiece)) {
+      currentX = newX;
+      currentY = newY;
+    }
+  }
 }
+
 
 // Update game state
 void TetrisGame::update() {
