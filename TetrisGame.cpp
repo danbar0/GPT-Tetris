@@ -113,47 +113,33 @@ void TetrisGame::update() {
 
 // Render the game
 void TetrisGame::render() {
-  // Clear the console
-  system("cls");
+    erase();
 
-  // Draw the game board
-  for (int y = 0; y < BOARD_HEIGHT; ++y) {
-    for (int x = 0; x < BOARD_WIDTH; ++x) {
-      setCursorPosition(x * 2, y);
-
-      // Check if the current piece occupies this cell
-      bool isCurrentPiece = false;
-      for (size_t py = 0; py < currentPiece.size(); ++py) {
-        for (size_t px = 0; px < currentPiece[py].size(); ++px) {
-          if (currentPiece[py][px] && y == currentY + py && x == currentX + px) {
-            isCurrentPiece = true;
-            break;
-          }
+    for (int row = 0; row < BOARD_HEIGHT; ++row) {
+        for (int col = 0; col < BOARD_WIDTH; ++col) {
+            if (board[row][col] != 0) {
+                attron(COLOR_PAIR(board[row][col]));
+                mvprintw(row, col * 2, "[]");
+                attroff(COLOR_PAIR(board[row][col]));
+            }
         }
-        if (isCurrentPiece) {
-          break;
-        }
-      }
-
-      // Set the text color based on the cell contents
-      if (isCurrentPiece) {
-        setColor(2);  // Green for the current piece
-      } else if (board[y][x]) {
-        setColor(1);  // Blue for the game board
-      } else {
-        setColor(0);  // Black for empty cells
-      }
-
-      // Draw the cell
-      std::cout << (isCurrentPiece || board[y][x] ? "[]" : "  ");
     }
-  }
 
-  // Draw the score (lines cleared)
-  setCursorPosition(0, 0);
-  setColor(7);  // White text
-  std::cout << "Lines cleared: " << linesCleared;
+    for (int row = 0; row < currentPiece.size(); ++row) {
+        for (int col = 0; col < currentPiece[row].size(); ++col) {
+            if (currentPiece[row][col] != 0) {
+                attron(COLOR_PAIR(currentPiece[row][col]));
+                mvprintw(currentY + row, (currentX + col) * 2, "[]");
+                attroff(COLOR_PAIR(currentPiece[row][col]));
+            }
+        }
+    }
+
+    mvprintw(0, BOARD_WIDTH * 2 + 2, "Lines cleared: %d", linesCleared);
+
+    refresh();
 }
+
 
 
 // Handle game overq
