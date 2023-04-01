@@ -88,8 +88,36 @@ void TetrisGame::processInput() {
 
 // Update game state
 void TetrisGame::update() {
-  // Move the current piece, check for collisions, and spawn a new piece if necessary
+  // Move the current piece down by one unit
+  int newX = currentX;
+  int newY = currentY + 1;
+
+  // Check if the move is valid
+  if (isValidMove(newX, newY, currentPiece)) {
+    // Update the piece's position
+    currentY = newY;
+  } else {
+    // Merge the current piece into the game board
+    mergePiece(currentX, currentY, currentPiece);
+
+    // Clear any completed lines
+    clearLines();
+
+    // Spawn a new piece
+    spawnPiece();
+
+    // Set the initial position of the new piece (top center of the board)
+    currentX = BOARD_WIDTH / 2 - currentPiece[0].size() / 2;
+    currentY = 0;
+
+    // Check if the new piece can be placed on the board
+    if (!isValidMove(currentX, currentY, currentPiece)) {
+      // If not, set the game over flag
+      isGameOver = true;
+    }
+  }
 }
+
 
 // Render the game
 void TetrisGame::render() {
