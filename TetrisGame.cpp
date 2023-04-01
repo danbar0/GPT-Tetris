@@ -166,8 +166,31 @@ void TetrisGame::render() {
 
 // Handle game overq
 void TetrisGame::gameOver() {
-  // Display a game over message and stop the game loop
+  // Clear the console
+  system("cls");
+
+  // Set the console cursor position and text color
+  setCursorPosition(BOARD_WIDTH, BOARD_HEIGHT / 2 - 1);
+  setColor(4);  // Red text
+
+  // Display the game over message
+  std::cout << "GAME OVER";
+
+  // Set the console cursor position and text color
+  setCursorPosition(BOARD_WIDTH, BOARD_HEIGHT / 2);
+  setColor(7);  // White text
+
+  // Display the final score (lines cleared)
+  std::cout << "Lines cleared: " << linesCleared;
+
+  // Set the console cursor position
+  setCursorPosition(BOARD_WIDTH, BOARD_HEIGHT / 2 + 1);
+
+  // Prompt the player to press a key to exit the game
+  std::cout << "Press any key to exit...";
+  _getch();
 }
+
 
 // Spawn a new piece
 void TetrisGame::spawnPiece() {
