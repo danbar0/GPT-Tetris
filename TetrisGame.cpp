@@ -225,9 +225,21 @@ bool TetrisGame::isValidMove(int newX, int newY, const std::vector<std::vector<i
 
 
 // Merge the current piece with the game board
-void TetrisGame::mergePiece(int x, int y, const std::vector<std::vector<int>>& piece) {
-// Add the current piece to the board
+void TetrisGame::mergePiece(int posX, int posY, const std::vector<std::vector<int>>& piece) {
+  for (size_t y = 0; y < piece.size(); ++y) {
+    for (size_t x = 0; x < piece[y].size(); ++x) {
+      // Check if the piece's cell is occupied
+      if (piece[y][x]) {
+        int boardX = posX + x;
+        int boardY = posY + y;
+
+        // Merge the occupied cell into the game board
+        board[boardY][boardX] = 1;
+      }
+    }
+  }
 }
+
 
 // Clear completed lines
 void TetrisGame::clearLines() {
