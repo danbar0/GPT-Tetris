@@ -121,10 +121,50 @@ void TetrisGame::update() {
 
 // Render the game
 void TetrisGame::render() {
-  // Draw the game board, pieces, and score
+  // Clear the console
+  system("cls");
+
+  // Draw the game board
+  for (int y = 0; y < BOARD_HEIGHT; ++y) {
+    for (int x = 0; x < BOARD_WIDTH; ++x) {
+      setCursorPosition(x * 2, y);
+
+      // Check if the current piece occupies this cell
+      bool isCurrentPiece = false;
+      for (size_t py = 0; py < currentPiece.size(); ++py) {
+        for (size_t px = 0; px < currentPiece[py].size(); ++px) {
+          if (currentPiece[py][px] && y == currentY + py && x == currentX + px) {
+            isCurrentPiece = true;
+            break;
+          }
+        }
+        if (isCurrentPiece) {
+          break;
+        }
+      }
+
+      // Set the text color based on the cell contents
+      if (isCurrentPiece) {
+        setColor(2);  // Green for the current piece
+      } else if (board[y][x]) {
+        setColor(1);  // Blue for the game board
+      } else {
+        setColor(0);  // Black for empty cells
+      }
+
+      // Draw the cell
+      std::cout << (isCurrentPiece || board[y][x] ? "[]" : "  ");
+    }
+  }
+
+  // Draw the score (lines cleared)
+  setCursorPosition(0, 0);
+  setColor(7);  // White text
+  std::cout << "Lines cleared: " << linesCleared;
 }
 
-// Handle game over
+
+// Handle game overq
 void TetrisGame::gameOver() {
   // Display a game over message and stop the game loop
 }
