@@ -195,7 +195,7 @@ void TetrisGame::gameOver() {
 // Spawn a new piece
 void TetrisGame::spawnPiece() {
   // Randomly select one of the pieces
-  currentPiece = pieces[rand() % pieces.size()];
+  currentPiece = TETROMINOS[rand() % pieces.size()];
 }
 
 
