@@ -300,7 +300,10 @@ void TetrisGame::rotatePiece() {
 
 // Set the console cursor position
 void TetrisGame::setCursorPosition(int x, int y) {
-// Set the position of the console cursor
+  COORD cursorPosition;
+  cursorPosition.X = x * 2;
+  cursorPosition.Y = y;
+  SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorPosition);
 }
 
 // Set the console text color
