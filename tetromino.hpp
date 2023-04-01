@@ -2,8 +2,6 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-#include <conio.h>
-#include <Windows.h>
 
 const int BOARD_WIDTH = 10;
 const int BOARD_HEIGHT = 20;

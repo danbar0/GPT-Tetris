@@ -2,6 +2,18 @@
 
 // TetrisGame constructor
 TetrisGame::TetrisGame() {
+    // Initialize the ncurses library
+    initscr();
+    raw();
+    keypad(stdscr, TRUE);
+    noecho();
+    timeout(DELAY);
+
+    // Initialize color pairs
+    start_color();
+    init_pair(1, COLOR_BLUE, COLOR_BLUE);
+    init_pair(2, COLOR_GREEN, COLOR_GREEN);
+
     // Initialize the game board with 0s (empty spaces)
     board.resize(BOARD_HEIGHT, std::vector<int>(BOARD_WIDTH, 0));
 
@@ -17,6 +29,10 @@ TetrisGame::TetrisGame() {
 
     // Set the initial game state
     isGameOver = false;
+}
+
+TetrisGame::~TetrisGame() {
+  endwin();
 }
 
 // Main game loop
@@ -51,7 +67,7 @@ void TetrisGame::run() {
 // Process user input
 void TetrisGame::processInput() {
   if (_kbhit()) {
-    int key = _getch();
+    int key = getch();
     int newX = currentX;
     int newY = currentY;
 
@@ -300,13 +316,10 @@ void TetrisGame::rotatePiece() {
 
 // Set the console cursor position
 void TetrisGame::setCursorPosition(int x, int y) {
-  COORD cursorPosition;
-  cursorPosition.X = x * 2;
-  cursorPosition.Y = y;
-  SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorPosition);
+  move(y, x * 2);
 }
 
 // Set the console text color
 void TetrisGame::setColor(int color) {
-  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+  attron(COLOR_PAIR(color));
 }

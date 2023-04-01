@@ -1,4 +1,5 @@
 #include "tetromino.hpp"
+#include <ncurses.h>
 
 class TetrisGame {
     public:
