@@ -240,11 +240,36 @@ void TetrisGame::mergePiece(int posX, int posY, const std::vector<std::vector<in
   }
 }
 
-
 // Clear completed lines
 void TetrisGame::clearLines() {
-// Check for full lines, remove them, and update the score
+  for (int y = BOARD_HEIGHT - 1; y >= 0;) {
+    bool isLineFull = true;
+
+    // Check if the line is full
+    for (int x = 0; x < BOARD_WIDTH; ++x) {
+      if (!board[y][x]) {
+        isLineFull = false;
+        break;
+      }
+    }
+
+    if (isLineFull) {
+      // Clear the line and move the lines above it down
+      for (int y2 = y; y2 > 0; --y2) {
+        for (int x = 0; x < BOARD_WIDTH; ++x) {
+          board[y2][x] = board[y2 - 1][x];
+        }
+      }
+
+      // Increment the lines cleared score
+      linesCleared++;
+    } else {
+      // Move to the next line
+      y--;
+    }
+  }
 }
+
 
 // Rotate the current piece
 void TetrisGame::rotatePiece(std::vector<std::vector<int>>& piece) {
