@@ -41,7 +41,7 @@ void TetrisGame::run() {
         processInput();
         update();
         render();
-        usleep(20000);
+        napms(100);
     }
     gameOver();
 }
