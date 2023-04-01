@@ -194,40 +194,10 @@ void TetrisGame::gameOver() {
 
 // Spawn a new piece
 void TetrisGame::spawnPiece() {
-  // Define the seven standard Tetris pieces
-  std::vector<std::vector<std::vector<int>>> pieces = {
-    {
-      {1, 1, 1},
-      {0, 1, 0},
-    },
-    {
-      {1, 1},
-      {1, 1},
-    },
-    {
-      {1, 1, 0},
-      {0, 1, 1},
-    },
-    {
-      {0, 1, 1},
-      {1, 1, 0},
-    },
-    {
-      {1, 1, 1, 1},
-    },
-    {
-      {1, 1, 1},
-      {1, 0, 0},
-    },
-    {
-      {1, 1, 1},
-      {0, 0, 1},
-    },
-  };
-
   // Randomly select one of the pieces
   currentPiece = pieces[rand() % pieces.size()];
 }
+
 
 
 // Check if a move is valid
