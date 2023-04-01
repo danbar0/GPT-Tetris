@@ -7,7 +7,7 @@ TetrisGame::TetrisGame() {
     raw();
     keypad(stdscr, TRUE);
     noecho();
-    timeout(DELAY);
+    timeout(0);
 
     // Initialize color pairs
     start_color();
@@ -37,58 +37,34 @@ TetrisGame::~TetrisGame() {
 
 // Main game loop
 void TetrisGame::run() {
-    using namespace std::chrono;
-    steady_clock::time_point currentTime = steady_clock::now();
-    steady_clock::time_point lastUpdateTime = steady_clock::now();
-    duration<double> timeStep(0.5);  // Controls the falling speed of the pieces
-
     while (!isGameOver) {
-        // Process user input
         processInput();
-
-        // Update the game state at regular intervals based on the timeStep
-        currentTime = steady_clock::now();
-        if (duration_cast<duration<double>>(currentTime - lastUpdateTime) >= timeStep) {
-            update();
-            lastUpdateTime = currentTime;
-        }
-
-        // Render the game
+        update();
         render();
-
-        // Sleep for a short duration to avoid consuming 100% CPU
-        Sleep(20);
+        usleep(20000);
     }
-
-    // Display the game over message
     gameOver();
 }
 
 // Process user input
 void TetrisGame::processInput() {
-  if (_kbhit()) {
     int key = getch();
     int newX = currentX;
     int newY = currentY;
 
     switch (key) {
-      case 224:  // Arrow keys have a 224 prefix
-        key = _getch();  // Get the actual arrow key code
-        switch (key) {
-          case 75:  // Left arrow key
-            newX--;
-            break;
-          case 77:  // Right arrow key
-            newX++;
-            break;
-          case 72:  // Up arrow key (rotate)
-            rotatePiece(currentPiece);
-            break;
-          case 80:  // Down arrow key (fast drop)
-            while (isValidMove(currentX, currentY + 1, currentPiece)) {
-              currentY++;
-            }
-            break;
+        case KEY_LEFT:  // Left arrow key
+        newX--;
+        break;
+        case KEY_RIGHT:  // Right arrow key
+        newX++;
+        break;
+        case KEY_UP:  // Up arrow key (rotate)
+        rotatePiece();
+        break;
+        case KEY_DOWN:  // Down arrow key (fast drop)
+        while (isValidMove(currentX, currentY + 1, currentPiece)) {
+            currentY++;
         }
         break;
     }
@@ -98,7 +74,7 @@ void TetrisGame::processInput() {
       currentX = newX;
       currentY = newY;
     }
-  }
+  
 }
 
 
@@ -204,14 +180,15 @@ void TetrisGame::gameOver() {
 
   // Prompt the player to press a key to exit the game
   std::cout << "Press any key to exit...";
-  _getch();
+  timeout(-1);
+    getch();
 }
 
 
 // Spawn a new piece
 void TetrisGame::spawnPiece() {
   // Randomly select one of the pieces
-  currentPiece = TETROMINOS[rand() % pieces.size()];
+   currentPiece = TETROMINOS[rand() % TETROMINOS.size()];
 }
 
 // Check if a move is valid
