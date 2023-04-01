@@ -270,10 +270,32 @@ void TetrisGame::clearLines() {
   }
 }
 
-
 // Rotate the current piece
-void TetrisGame::rotatePiece(std::vector<std::vector<int>>& piece) {
-// Perform a 90-degree clockwise rotation
+void TetrisGame::rotatePiece() {
+  std::vector<std::vector<int>> rotatedPiece = currentPiece;
+
+  // Get the dimensions of the current piece
+  size_t rows = currentPiece.size();
+  size_t cols = currentPiece[0].size();
+
+  // Resize the rotated piece
+  rotatedPiece.resize(cols);
+  for (size_t i = 0; i < cols; ++i) {
+    rotatedPiece[i].resize(rows);
+  }
+
+  // Perform the 90-degree clockwise rotation
+  for (size_t y = 0; y < rows; ++y) {
+    for (size_t x = 0; x < cols; ++x) {
+      rotatedPiece[x][rows - y - 1] = currentPiece[y][x];
+    }
+  }
+
+  // Check if the rotated piece has a valid position on the game board
+  if (isValidMove(currentX, currentY, rotatedPiece)) {
+    // Apply the rotation
+    currentPiece = rotatedPiece;
+  }
 }
 
 // Set the console cursor position
