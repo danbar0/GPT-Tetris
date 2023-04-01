@@ -21,7 +21,31 @@ TetrisGame::TetrisGame() {
 
 // Main game loop
 void TetrisGame::run() {
-  // While the game is not over, process input, update, and render
+    using namespace std::chrono;
+    steady_clock::time_point currentTime = steady_clock::now();
+    steady_clock::time_point lastUpdateTime = steady_clock::now();
+    duration<double> timeStep(0.5);  // Controls the falling speed of the pieces
+
+    while (!isGameOver) {
+        // Process user input
+        processInput();
+
+        // Update the game state at regular intervals based on the timeStep
+        currentTime = steady_clock::now();
+        if (duration_cast<duration<double>>(currentTime - lastUpdateTime) >= timeStep) {
+            update();
+            lastUpdateTime = currentTime;
+        }
+
+        // Render the game
+        render();
+
+        // Sleep for a short duration to avoid consuming 100% CPU
+        Sleep(20);
+    }
+
+    // Display the game over message
+    gameOver();
 }
 
 // Process user input
